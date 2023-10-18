@@ -14,6 +14,15 @@ bg = pygame.image.load('background/bg.jpg')
 player_speed = 5
 player_x = 100
 player_y = 140
+
+afk = [pygame.image.load('afk/afk_1.png'),
+       pygame.image.load('afk/afk_2.png'),
+       pygame.image.load('afk/afk_3.png'),
+       pygame.image.load('afk/afk_4.png'),
+       pygame.image.load('afk/afk_5.png'),
+       pygame.image.load('afk/afk_6.png'),
+       pygame.image.load('afk/afk_7.png')
+       ]
 jump_up = [pygame.image.load('jump_up/jump_1.png'),
            pygame.image.load('jump_up/jump_up_1.png'),
            pygame.image.load('jump_up/jump_up_2.png'),
@@ -35,6 +44,7 @@ walk_right = [pygame.image.load('player_right/afk1.png'),
 is_jump = False
 jump_count = 7
 
+afk_anim = 0
 player_jump_anim_count = 0
 player_anim_count = 0
 bg_x = 0
@@ -49,8 +59,12 @@ while running:
 
     if keys[pygame.K_SPACE]:
         screen.blit(jump_up[player_jump_anim_count], (player_x, player_y))
-    else:
+        player_jump_anim_count += 1
+    elif keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
         screen.blit(walk_right[player_anim_count], (player_x, player_y))
+        player_anim_count += 1
+    else:
+        screen.blit(afk[afk_anim], (player_x, player_y))
 
     if not is_jump:
         if keys[pygame.K_SPACE]:
@@ -72,8 +86,6 @@ while running:
 
     if player_jump_anim_count == 9:
         player_jump_anim_count = 0
-    else:
-        player_jump_anim_count += 1
 
     if keys[pygame.K_RIGHT]:
         player_x += player_speed
@@ -89,8 +101,11 @@ while running:
 
     if player_anim_count == 3:
         player_anim_count = 0
+
+    if afk_anim == 6:
+        afk_anim = 0
     else:
-        player_anim_count += 1
+        afk_anim += 1
 
     pygame.display.update()
 
@@ -102,4 +117,7 @@ while running:
             running = False
             pygame.quit()
 
-    clock.tick(24)
+    clock.tick(15)
+
+# bug with jump
+# bug with speed animations
